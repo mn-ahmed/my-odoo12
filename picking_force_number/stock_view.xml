@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="picking_form_int_number">
+            <field name="name">picking.form.int_number</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="attributes">
+                   <field name="name" attrs="{'readonly': [('state','=','done')]}"/>
+                    <attribute name="readonly">0</attribute>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

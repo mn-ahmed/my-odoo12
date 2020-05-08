@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="invoice_ou_blform" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.invoice_form" />
+            <field name="arch" type="xml">
+               <field name="payment_term_id" position="after">
+                    <field name="fabl" />
+                </field>
+            </field>
+        </record>
+
+        <record id="view_account_invoice_filter2" model="ir.ui.view">
+            <field name="name">account.invoice.select2</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='draft']" position="before">
+                    <filter name="invoices" string="Invoices" domain= "['&amp;',('state','in',['open','paid']),('type','in',('out_invoice','in_invoice')),('fabl','=','invoice')]"/>
+                    <filter name="bl" string="BL" domain="['&amp;', ('state','in',['open','paid']),('type','in',('out_invoice','in_invoice')),('fabl','=','bl')]"/>
+                    <separator/>
+                </xpath>
+            </field>
+        </record>
+	</data>
+</openerp>

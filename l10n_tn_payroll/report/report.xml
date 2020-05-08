@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+       
+    <record id="report_l10n_tn_fiche_paye_py3o" model="ir.actions.report">
+      <field name="name">BULLETIN DE PAIE</field>
+      <field name="type">ir.actions.report</field>
+      <field name="model">hr.payslip</field>
+      <field name="report_name">Py3o_fiche_de_paie</field>
+      <field name="report_type">py3o</field>
+      <field name="py3o_filetype">pdf</field>
+      <field name="module">l10n_tn_payroll</field>
+      <field name="py3o_template_fallback">report/fiche_de_paie.odt</field>
+      <field name="binding_model_id" ref="hr_payroll.model_hr_payslip" />
+      <field name="binding_type">report</field>
+    </record>
+ 
+ </odoo>
+
+      

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	<!-- advance salary rule -->
+    <record id="hr_payslip_rule_advance1" model="hr.salary.rule">
+        <field name="sequence">99000005</field>
+        <field name="code">AVS</field>
+        <field name="name">Avance sur salaire</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = inputs.AVS and  (inputs.AVS.amount)</field>
+		<field name="appears_on_payslip" eval="True"/>
+		<field name="register_id" ref="hr_payroll.contrib_register_employees"/>
+    </record>
+    
+    <record id="hr_rule_input_advance1" model="hr.rule.input">
+            <field name="code">AVS</field>
+            <field name="name">Avance sur salaire</field>
+            <field name="input_id" ref="hr_payslip_rule_advance1"/>
+        </record>
+    
+    <record id="hr_payroll_rules_NAP" model="hr.salary.rule">
+        <field name="name">Net à Payer</field>
+        <field name="sequence">99000010</field>
+        <field name="code">NAP</field>
+        <field name="category_id" ref="hr_payroll.NET"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = NET - AVS</field>
+        <field name="appears_on_payslip" eval="True"/>
+		<field name="note">C'est le salaire Net à payer qui est le salaire Net - Avance sur salaire </field>
+		<field name="register_id" ref="hr_payroll.contrib_register_employees"/>
+    </record>
+        
+    <record id="l10n_tn_payroll.hr_payroll_salary_structure_base" model="hr.payroll.structure">
+        <field name="code">Tu-Base-horaire</field>
+        <field name="name">Cotisations de base Employe Tunisien</field>
+        <field eval="[(6, 0, [ref('hr_payroll.hr_rule_basic'), ref('l10n_tn_payroll.hr_rule_basic_hor'), ref('l10n_tn_payroll.hr_payroll_rules_MARIE'), ref('hr_payroll.hr_rule_taxable'), ref('l10n_tn_payroll.hr_payroll_rules_ENF1'), ref('l10n_tn_payroll.hr_payroll_rules_ENF2'), ref('l10n_tn_payroll.hr_payroll_rules_ENF3'), ref('l10n_tn_payroll.hr_payroll_rules_ENF4'), ref('l10n_tn_payroll.hr_payroll_rules_frais_pro'), ref('hr_payroll.hr_rule_net'), ref('l10n_tn_payroll.hr_rule_secu') , ref('l10n_tn_payroll.hr_rule_total'), ref('l10n_tn_payroll.hr_rule_total_charges_salariales'), ref('l10n_tn_payroll.hr_rule_total_retenues'), ref('l10n_tn_payroll.hr_rule_cumul_imposable'), ref('l10n_tn_payroll.hr_rule_total_charges_patronales'), ref('l10n_tn_payroll.hr_payroll_rules_C1_employe'), ref('l10n_tn_payroll.hr_rule_total_deductionimpot'), ref('l10n_tn_payroll.hr_payroll_rules_CNSS1'), ref('l10n_tn_payroll.hr_rule_cumul_imposableannuel'), ref('l10n_tn_payroll.hr_rule_cumul_impo_apres_ded'), ref('l10n_tn_payroll.hr_payroll_rules_TRANCHE1'), ref('l10n_tn_payroll.hr_payroll_rules_TRANCHE2'), ref('l10n_tn_payroll.hr_payroll_rules_TRANCHE3'), ref('l10n_tn_payroll.hr_rule_IRPP'), ref('l10n_tn_payroll.hr_payroll_rules_TRANCHE4'), ref('l10n_tn_payroll.hr_payroll_rules_TRANCHE5'),ref('l10n_tn_payroll.hr_payroll_rules_TRANCHE0'),ref('l10n_tn_payroll.hr_rule_CONSS'),ref('hr_payslip_rule_advance1'),ref('hr_payroll_rules_NAP')])]" name="rule_ids"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="parent_id" ref="hr_payroll.structure_base"/>
+		<field name="note">Cette rubrique représente la structure des emploés tunisiens.</field>
+    </record>
+    
+
+    
+    
+    
+    </data>
+</odoo>

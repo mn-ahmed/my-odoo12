@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+      <!-- chart template -->
+      <record id="l10n_tn_chart_template" model="account.chart.template">
+          <field name="property_account_receivable_id" ref="tn_pcg_recv"/>
+          <field name="property_account_payable_id" ref="tn_pcg_pay"/>
+          <field name="property_account_expense_categ_id" ref="account607"/>
+          <field name="property_account_income_categ_id" ref="account707"/>
+          <field name="income_currency_exchange_account_id" ref="account756"/>
+          <field name="expense_currency_exchange_account_id" ref="account655"/>
+          <field name="currency_id" ref="base.TND"/>
+      </record>
+
+      <!-- Account Tags -->
+      <record id="tva_col_29" model="account.account.tag">
+          <field name="name">TVA 29% VENT</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_col_18" model="account.account.tag">
+          <field name="name">TVA 19% VENTES</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_col_12" model="account.account.tag">
+          <field name="name">TVA 13% VENTES</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_col_6" model="account.account.tag">
+          <field name="name">TVA 7% VENTES</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_acq_29" model="account.account.tag">
+          <field name="name">TVA 29% ACHATS</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_acq_18" model="account.account.tag">
+          <field name="name">TVA 19% ACHATS</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_acq_12" model="account.account.tag">
+          <field name="name">TVA 13% ACHATS</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_acq_6" model="account.account.tag">
+          <field name="name">TVA 7% ACHATS</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_imm_29" model="account.account.tag">
+          <field name="name">TVA 29% IMMO</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_imm_18" model="account.account.tag">
+          <field name="name">TVA 19% IMMO</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_imm_12" model="account.account.tag">
+          <field name="name">TVA 13% IMMO</field>
+          <field name="applicability">taxes</field>
+      </record>
+      <record id="tva_imm_6" model="account.account.tag">
+          <field name="name">TVA 7% IMMO</field>
+          <field name="applicability">taxes</field>
+      </record>
+
+      <!-- Account Tax Template -->
+
+      <record model="account.tax.template" id="tva_vt18">
+          <field name="name">19%</field>
+          <field name="description">19%</field>
+          <field name="type_tax_use">sale</field>
+          <field name="refund_account_id" ref="account4367111"/>
+          <field name="account_id" ref="account4367111"/>
+          <field name="amount">19</field>
+          <field name="amount_type">percent</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+          <field name="tag_ids" eval="[(6,0,[ref('tva_col_18')])]"/>
+      </record>
+      <record model="account.tax.template" id="tva_vt29">
+          <field name="name">29%</field>
+          <field name="description">29%</field>
+          <field name="type_tax_use">sale</field>
+          <field name="refund_account_id" ref="account4367110"/>
+          <field name="account_id" ref="account4367110"/>
+          <field name="amount">29</field>
+          <field name="amount_type">percent</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+          <field name="tag_ids" eval="[(6,0,[ref('tva_col_29')])]"/>
+      </record>
+      <record model="account.tax.template" id="tva_vt12">
+          <field name="name">13%</field>
+          <field name="description">13%</field>
+          <field name="type_tax_use">sale</field>
+          <field name="refund_account_id" ref="account4367112"/>
+          <field name="account_id" ref="account4367112"/>
+          <field name="amount">13</field>
+          <field name="amount_type">percent</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+          <field name="tag_ids" eval="[(6,0,[ref('tva_col_12')])]"/>
+      </record>
+      <record model="account.tax.template" id="tva_vt6">
+          <field name="name">7%</field>
+          <field name="description">7%</field>
+          <field name="type_tax_use">sale</field>
+          <field name="refund_account_id" ref="account4367113"/>
+          <field name="account_id" ref="account4367113"/>
+          <field name="amount">7</field>
+          <field name="amount_type">percent</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+          <field name="tag_ids" eval="[(6,0,[ref('tva_col_6')])]"/>
+      </record>
+      <record model="account.tax.template" id="tva_tfv">
+          <field name="name">Timbre fiscal</field>
+          <field name="description">Timbre fiscal</field>
+          <field name="type_tax_use">sale</field>
+          <field name="refund_account_id"/>
+          <field name="account_id"/>
+          <field name="amount">0.6</field>
+          <field name="amount_type">fixed</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+      </record>
+
+      <record model="account.tax.template" id="tva_ac18">
+          <field name="name">19%</field>
+          <field name="description">TVA 19% ACHATS</field>
+          <field name="type_tax_use">purchase</field>
+          <field name="refund_account_id" ref="account436661"/>
+          <field name="account_id" ref="account436661"/>
+          <field name="amount">19</field>
+          <field name="amount_type">percent</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+          <field name="tag_ids" eval="[(6,0,[ref('tva_acq_18')])]"/>
+      </record>
+      <record model="account.tax.template" id="tva_ac29">
+          <field name="name">29</field>
+          <field name="description">TVA 29% ACHATS</field>
+          <field name="type_tax_use">purchase</field>
+          <field name="refund_account_id" ref="account436660"/>
+          <field name="account_id" ref="account436660"/>
+          <field name="amount">29</field>
+          <field name="amount_type">percent</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+          <field name="tag_ids" eval="[(6,0,[ref('tva_acq_29')])]"/>
+      </record>
+      <record model="account.tax.template" id="tva_ac12">
+          <field name="name">13%</field>
+          <field name="description">TVA 13% ACHATS</field>
+          <field name="type_tax_use">purchase</field>
+          <field name="refund_account_id" ref="account436662"/>
+          <field name="account_id" ref="account436662"/>
+          <field name="amount">13</field>
+          <field name="amount_type">percent</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+          <field name="tag_ids" eval="[(6,0,[ref('tva_acq_12')])]"/>
+      </record>
+      <record model="account.tax.template" id="tva_ac6">
+          <field name="name">7%</field>
+          <field name="description">TVA 7% ACHATS</field>
+          <field name="type_tax_use">purchase</field>
+          <field name="refund_account_id" ref="account436663"/>
+          <field name="account_id" ref="account436663"/>
+          <field name="amount">7</field>
+          <field name="amount_type">percent</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+          <field name="tag_ids" eval="[(6,0,[ref('tva_acq_6')])]"/>
+      </record>
+      <record model="account.tax.template" id="tva_tfa">
+          <field name="name">Timbre fiscal</field>
+          <field name="description">Timbre fiscal</field>
+          <field name="type_tax_use">purchase</field>
+          <field name="refund_account_id"/>
+          <field name="account_id"/>
+          <field name="amount">0.6</field>
+          <field name="amount_type">fixed</field>
+          <field name="chart_template_id" ref="l10n_tn_chart_template"/>
+      </record>
+
+	</data>
+  </openerp>

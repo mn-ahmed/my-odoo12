@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="pos_session_report_py3o" model="ir.actions.report">
+        <field name="name">Raport de session</field>
+        <field name="model">pos.session</field>
+        <field name="report_name">report.session</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">pos_ssession_report_py3o</field>
+        <field name="py3o_template_fallback">report/report.odt</field>
+   
+    </record>
+</odoo>

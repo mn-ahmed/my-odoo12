@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ht_report_customer_invoice" model="ir.actions.report">
+        <field name="name">Facture HT</field>
+        <field name="model">account.invoice</field>
+        <field name="report_name">facture.ht.report</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">tn_invoice_report_py3o</field>
+        <field name="py3o_template_fallback">report/invoice_ht.odt</field>
+        <field name="attachment">(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="groups">account.group_account_invoice</field>
+    </record>
+
+	
+     <record id="ttc_report_customer_invoice" model="ir.actions.report">
+        <field name="name">Facture TTC</field>
+        <field name="model">account.invoice</field>
+        <field name="report_name">facture.ttc.report</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">tn_invoice_report_py3o</field>
+        <field name="py3o_template_fallback">report/invoice_ttc.odt</field>
+        <field name="attachment">(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="groups">account.group_account_invoice</field>
+    </record>
+</odoo>

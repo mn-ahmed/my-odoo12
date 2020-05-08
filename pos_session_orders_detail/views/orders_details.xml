@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Liste des commande -->
+	<record id="pos_session_form_custom12" model="ir.ui.view">
+    	<field name="name">pos.session.form.view</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <field name="statement_ids" position="after">
+                <separator string="Commandes"/> <!--groups="pos_session_orders_detail.group_pos_session_orders_details"-->
+                <field name="orders_ids">
+                    <tree editable="0">
+                        <field name="session_id"/>
+                        <field name="name"/>
+                        <field name="pos_reference"/>
+                        <field name="partner_id"/>
+                        <field name="date_order"/>
+                        <field name="user_id"/>
+                        <field name="amount_total" sum="Amount total" widget="monetary"/>
+                        <!--field name="amount_due" sum="Montant dûe" widget="monetary"/-->
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="state"/>
+                    </tree>
+                </field>
+            </field>
+        </field>
+    </record>
+    <!-- Montant de transaction plus montant final tree view -->
+    <record id="pos_session_form_custom1" model="ir.ui.view">
+    	<field name="name">pos.session.tree.view_inherit</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_tree"/>
+        <field name="arch" type="xml">
+	        <field name="stop_at" position="after">
+	        	<field name="currency_id" invisible="1"/>
+                <field name="cash_register_total_entry_encoding" string="Transactions" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="cash_register_balance_end" string="Solde de Clôture" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+            </field>
+        </field>
+    </record>
+
+     <!-- Dashboard -->
+
+    <record model="ir.ui.view" id="view_pos_config_kanban_transaction">
+        <field name="name">view.pos.config.kanban.transaction</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_kanban"/>
+        <field name="model">pos.config</field>
+        <field name="arch" type="xml">
+             <xpath expr='//kanban/templates/t/div/div/div/div/div[@t-if="record.last_session_closing_date.value"]' position="after">
+                <div t-if="record.last_session_closing_date.value" class="row">
+                    <div class="col-6">
+                        <span>Transactions</span>
+                    </div>
+                    <div class="col-6">
+                        <span><field name="transaction_cash" widget="monetary"/></span>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+
