@@ -9,33 +9,24 @@
     'description': """
         This module adds a functionality for Tunisia based Invoice like stamp ...
     """,
-
     'license': 'AGPL-3',
-
     'author': "	AHMED MNASRI",
-
     'website': "",
-
     'category': 'Accounting',
-    
-    'version': '12.0.0.1.0',
-
+    'version': '12.0.0.2.0',
     'depends': ['account',
                 'timbre_fiscal',
                 ],
-
     'data': [
+        'data/invoice_data.xml',
         'report/reports.xml',
+        'invoice/invoice_lines_template.xml',
         'report/invoice_report_template.xml',
-        
-    ],
-    'images': [
-    ],
 
+    ],
+    'images': [],
     'installable': True,
-
     'auto_install': False,
-
     'application': True,
 
 

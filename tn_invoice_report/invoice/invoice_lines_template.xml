@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="invoice_body">
+			<t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+			<table  class="table table-sm o_main_table table-bordered" name="invoice_line_table">
+				<thead>
+					<tr t-attf-style="background-color:#bcbcbc;font-size:14px;">
+						<!-- TODO: remove in master -->
+						<t t-set="colspan" t-value="6"/>
+						<th class="text-center"><span>Description</span></th>
+						<th class="d-none text-center"><span>Source Document</span></th>
+						<th class="text-center"><span>Qté</span></th>
+						<th t-attf-class="text-center {{'d-none d-md-table-cell' if report_type == 'html' else '' }}"><span>P.U</span></th>
+						<th t-if="display_discount" t-attf-class="text-center {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+							<span>Rem.(%)</span>
+							<!-- TODO: remove in master -->
+							<t t-set="colspan" t-value="colspan+1"/>
+						</th>
+						<th t-attf-class="text-center {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>TVA</span></th>
+						<th class="text-right">
+							<span groups="account.group_show_line_subtotals_tax_excluded">Montant</span>
+							<span groups="account.group_show_line_subtotals_tax_included">Montant</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="invoice_tbody">
+					<t t-set="current_subtotal" t-value="0"/>
+					<t t-foreach="o.invoice_line_ids" t-as="line">
+						<t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+						<t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+						<tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+							<t t-if="not line.display_type" name="account_invoice_line_accountable">
+							  <t t-if="not line.product_id.timbre_fiscal">
+								<td name="account_invoice_line_name"><span t-field="line.name"/></td>
+								<td class="d-none"><span t-field="line.origin"/></td>
+								<td class="text-right">
+									<span t-field="line.quantity"/>
+									<span t-field="line.uom_id" groups="uom.group_uom"/>
+								</td>
+								<td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+									<span t-field="line.price_unit"/>
+								</td>
+								<td t-if="display_discount" t-attf-class="text-center {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+									<span t-field="line.discount"/>
+								</td>
+								<td t-attf-class="text-center {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+									<span t-esc="', '.join(map(lambda x: (x.description or x.name), line.invoice_line_tax_ids))"/>
+								</td>
+								<td class="text-right o_price_total">
+									<span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+									<span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+								</td>
+							  </t>
+							</t>
+							<t t-if="line.display_type == 'line_section'">
+								<td colspan="99">
+									<span t-field="line.name"/>
+								</td>
+								<t t-set="current_section" t-value="line"/>
+								<t t-set="current_subtotal" t-value="0"/>
+							</t>
+							<t t-if="line.display_type == 'line_note'">
+								<td colspan="99">
+									<span t-field="line.name"/>
+								</td>
+							</t>
+						</tr>
+						<t t-if="current_section and (line_last or o.invoice_line_ids[line_index+1].display_type == 'line_section')">
+							<tr class="is-subtotal text-right">
+								<td colspan="99">
+									<strong class="mr16">Subtotal</strong>
+									<span t-esc="current_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+						</t>
+					</t>
+				</tbody>
+			</table>
+        </template>
+
+		<template id="invoice_footer" >
+			<div t-if="o.comment" t-attf-style="font-size:9px;">
+				<span t-field="o.comment"/>
+			</div>
+				<div t-attf-class="#{'col-4 float-right' if report_type != 'html' else 'col-sm-7 col-md-5 float-right'} ml-auto" style="padding-right:8px;">
+					<table class="table table-sm">
+					<tr class="border-black o_subtotal" style="">
+						<td><strong>Total HT</strong></td>
+						<td class="text-right">
+							<span t-field="o.total_before_discount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+						</td>
+					</tr>
+					<tr t-if="not o.discount == 0" style="">
+						<td><span>Remise</span></td>
+						<td class="text-right">
+							<span t-field="o.discount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+						</td>
+					</tr>
+					<tr style="">
+						<td><span>Total Net HT</span></td>
+						<td class="text-right">
+							<span t-field="o.amount_untaxed"/>
+						</td>
+					</tr>
+					<tr style="">
+						<td><span>TVA</span></td>
+						<td class="text-right">
+							<span t-esc="o.amount_tax" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+						</td>
+					</tr>
+					<tr t-if="not o.timbre == 0" style="">
+						<td><span>Timbre fiscal</span></td>
+						<td class="text-right">
+							<span t-esc="o.timbre" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+						</td>
+					</tr>
+					<tr class="border-black o_total">
+						<td><strong>Total TTC</strong></td>
+						<td class="text-right">
+							<span t-field="o.amount_total"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div t-if="o.tax_line_ids" class="col-7 float-left" style="padding-top:1px; padding-left:0px; padding-right:0px; page-break-inside: avoid;">
+				<table class="table table-sm">
+					<thead>
+						<tr class="border-black o_subtotal">
+							<th>Tax</th>
+							<th class="text-center">Base</th>
+							<th class="text-right">Montant</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr t-foreach="o.tax_line_ids" t-as="t">
+							<t t-if="not t.base == 0">
+							<td><span t-field="t.name"/></td>
+							<td class="text-right">
+								<span t-field="t.base"/>
+							</td>
+							<td class="text-right">
+								<span t-field="t.amount"/>
+							</td>
+							</t>
+						</tr>
+
+					</tbody>
+			   </table>
+				 <p>Arrêtée la présente facture à la somme de : <b><span t-field="o.in_words"/></b>
+				 </p>
+			</div>
+
+		</template>
+    </data>
+</odoo>

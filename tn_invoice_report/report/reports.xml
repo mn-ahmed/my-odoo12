@@ -1,30 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record model="report.paperformat" id="paperformat_attendance_recap_report">
-        <field name="name">Tn Forma papier Facture</field>
-        <field name="default" eval="True"/>
-        <field name="format">A4</field>
-        <field name="page_width">0</field>
-        <field name="page_width">0</field>
-        <field name="orientation">Portrait</field>
-        <field name="margin_top">30</field>
-        <field name="margin_right">5</field>
-        <field name="margin_bottom">50</field>
-        <field name="margin_left">5</field>
-        <field name="header_line" eval="False"/>
-        <field name="header_spacing">20</field>
-        <field name="dpi">90</field>
-    </record>
+	<data>
     	<!-- Invoice Reports -->
         <report 
-            string="TN Invoice Report"
-            id="tn_report_customer_invoice" 
+            id="account.account_invoices"
+            string="Invoices" 
             model="account.invoice" 
             report_type="qweb-pdf"
+            paperformat="tn_invoice_report.paperformat_tn_invoiceA4"
             name="tn_invoice_report.report_customer_invoice"
             file="tn_invoice_report.report_customer_invoice"
-
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
         />
 
+
+    </data>    
 </odoo>
  <!-- paperformat="paperformat_attendance_recap_report" -->
